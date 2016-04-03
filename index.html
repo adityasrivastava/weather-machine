@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script> -->
+<script type="text/javascript" src="./jquery-2.1.4.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular.min.js"></script>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="./jquery.datetimepicker.css">
+
+	<script type="text/javascript" src="./jquery.datetimepicker.js"></script>
+
+	<script src="http://maps.googleapis.com/maps/api/js"></script>
+
+	<script type="text/javascript" src="./main.js"></script>
+
+
+	<link rel="stylesheet" type="text/css" href="./main.css">
+	<title>Travel Weather News</title>
+</head>
+<body id="page-top" class="index">
+
+<div ng-app="weatherApp" class="container">
+
+	<div ng-controller="weatherController" class="userInfoContainer">
+
+	<!-- Page Header -->
+
+	<nav class="navbar navbar-default navbar-fixed-top" style="background-color: rgb(153, 226, 157); border:0px; color: white;">
+        <div class="container">
+        
+            <div class="navbar-header page-scroll">
+             
+                <a class="navbar-brand" href="#page-top">Travel Weather News</a>
+                
+            </div>
+
+          
+        </div>
+    
+    </nav>
+
+    	<!-- Page Header -->
+
+	<!-- Map Pop over -->
+
+	<!-- Modal -->
+	<div id="myModal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">{{locationName}}</h4>
+	      </div>
+	      <div class="modal-body">
+	      <div id="googleMap" style="width:570px;height:380px;"></div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+
+	  </div>
+	</div>
+
+
+	<!-- Map Pop over -->
+
+	<!-- Main Page - User Information Page -->
+		<div id="mainPage">
+
+			<div class="row" style="margin: 0px; margin-top:50px;">
+
+			<form name="weatherForm">
+
+				<!-- Name -->
+
+				<div class="row">
+
+					<div class="col-md-2">
+						<label>Name</label>
+					</div>
+
+					<div class="col-md-3" ng-class="{'has-error': weatherForm.name.$check_validity}">
+						<input class="form-control" name="name" type="text" ng-model="form_details.name"/>
+					</div>
+
+				</div>
+				<!-- Name -->
+
+				<!-- Age -->
+
+				<div class="row">
+
+					<div class="col-md-2">
+
+						<label>Age</label>
+
+					</div>
+
+					<div class="col-md-3" ng-class="{'has-error': weatherForm.age.$check_validity}">
+
+						<input class="form-control" name="age" type="text" ng-model="form_details.age"/>
+
+					</div>
+
+				</div>
+
+
+				<!-- Age -->
+
+				<!-- Gender -->
+
+				<div class="row">
+
+					<div class="col-md-2">
+
+						<label>Gender</label>
+
+					</div>
+
+
+					<div class="col-sm-1">
+
+						<input class="radio" type="radio" name="gender" ng-value="0" ng-model="form_details.gender"/>Male
+
+					</div>
+
+					<div class="col-sm-1">
+
+						<input class="radio" type="radio" name="gender" ng-value="1" ng-model="form_details.gender"/>Female
+
+					</div>
+
+				</div>
+
+
+				<!-- Gender -->
+
+
+				<!-- Address -->
+
+				<div class="row">
+
+
+					<div class="col-md-2">
+
+					<label>Address</label>
+
+
+					</div>
+
+					<div class="col-md-3" ng-class="{'has-error': weatherForm.address.$check_validity}">
+
+					<textarea class="form-control" name="address" ng-model="form_details.address"></textarea>
+
+					</div>
+
+
+				</div>
+
+
+				<!-- Address -->
+
+				<!-- Out Door Activity Planned -->
+
+				<div class="row">
+
+					<div class="col-md-2">
+
+						<label>Activity</label>
+
+					</div>
+
+					<div class="col-md-3" ng-class="{'has-error': weatherForm.activitySelected.$check_validity}">
+
+						<select class="form-control" name="activitySelected" ng-model="form_details.activitySelected" ng-options="activity for activity in form_details.activities"></select>
+
+					</div>
+
+				</div>
+
+
+				<!-- Out Door Activity Planned -->
+
+				<!-- Contact -->
+
+				<div class="row">
+
+
+				<div class="col-md-2">
+
+					<label>Contact No.</label>
+
+				</div>
+
+
+				<div class="col-md-3" ng-class="{'has-error': weatherForm.phoneNumber.$check_validity}">
+
+					<input type="text" class="form-control" name="phoneNumber" ng-model="form_details.phoneNumber"/>
+
+				</div>
+
+					<div class="col-md-2" ng-if="weatherForm.phoneNumber.$check_validity == true">
+
+						<span style="color: #B97B7B">Please enter valid phone number (8-10)</span>
+
+					</div>
+				
+
+				</div>
+
+
+				<!-- Contact -->
+
+				<!-- Email Id -->
+
+				<div class="row">
+
+
+					<div class="col-md-2">
+						<label>Email Id</label>
+					</div>
+
+					<div class="col-md-3" ng-class="{'has-error': weatherForm.emailid.$check_validity}">
+						<input type="text" class="form-control" name="emailid" ng-model="form_details.emailid"/>
+					</div>
+
+					<div class="col-md-2" ng-if="weatherForm.emailid.$check_validity == true">
+
+						<span style="color: #B97B7B">Please enter valid email id</span>
+
+					</div>
+
+				</div>
+
+
+				<!-- Email Id -->
+
+				<!-- Travel Time -->
+
+				<!-- <label>Travel Time</label><input ng-model="travelTime"/> -->
+
+				<div class="row">
+
+				<div class="col-md-2">
+				 	<label>Travel Time</label>
+				</div>
+
+				 <div class="col-md-3" ng-class="{'has-error': weatherForm.travelTime.$check_validity}">
+
+						
+						            <div class="form-group">
+						                <div class='input-group date' id='datetimepicker5'>
+						                    <input type='text' class="form-control" ng-model="form_details.travelTime" name="travelTime" datetimepicker/>
+						                    <span class="input-group-addon" ng-click="inputGroupButtonClick($event)">
+						                        <span class="glyphicon glyphicon-calendar"></span>
+						                    </span>
+						                </div>
+						            </div>
+					
+
+				 </div>
+
+
+
+				</div>
+
+
+				<!-- Travel Time -->
+
+
+				<!-- Location -->
+
+				<div class="row" ng-repeat="loc in form_details.location track by $index">
+
+					<div class="col-md-2">
+
+						<label>Location {{$i = $index + 1}}</label>
+
+					</div>
+
+					<div class="col-md-3" ng-class="{'has-error': weatherForm[location_{{$index}}].$check_validity}">
+
+					<input class="form-control" ng-model="loc.name" name="location_{{$index}}" />
+
+					</div>
+
+					<div class="col-sm-1" style="width:0.333333%; color:#8FEF96;margin-top:10px;" ng-click="addLocation($index)">
+
+						<i class="glyphicon glyphicon-plus"></i>
+
+					</div>
+
+					<div class="col-sm-1" style="width:0.333333%; color:#E87777;margin-top:10px;" ng-click="removeLocation($index)">
+
+						<i class="glyphicon glyphicon-remove"></i>
+
+					</div>
+
+					<div class="col-md-2" ng-if="weatherForm[location_$index].$check_validity">
+
+						<span style="color: #B97B7B">Please enter valid location</span>
+
+					</div>
+
+				</div>
+
+				<!-- Location -->
+
+				<!-- Get Location -->
+
+				<div class="row">
+	
+						<div class="col-md-2 col-md-offset-4" style="margin-left: 33.333333%;">
+
+						<div class="btn btn-primary" ng-click="getLocationData($event)" ng-disabled="validation_check == 'true'">Submit</div>
+
+						</div>
+
+				</div>
+
+				<!-- Get Location -->
+
+			</form>
+
+			</div>
+
+		</div>
+
+	<!-- Main Page - User Information Page -->
+
+	<hr/>
+	<!-- Weather Data Page - User Weather information -->
+
+		<div id="weatherData" ng-if="weatherDataResult[0].item != null">
+
+			<!-- User Information -->
+
+			<div class="row">
+
+			<div class="col-md-4">
+
+			<table class="table">
+				<thead>
+				
+					<th colspan="2">User Information</th>
+
+				</thead>
+
+				<tbody>
+					<tr>
+						<td><label>Name</label></td>
+						<td>{{form_view_details.name}}</td>
+					</tr>
+					<tr>
+						<td><label>Age</label></td>
+						<td>{{form_view_details.age}}</td>
+					</tr>
+					<tr>
+						<td><label>Gender</label></td>
+						<td><span ng-if="form_view_details.gender == 0">Male</span><span ng-if="form_view_details.gender == 1">Gender</span></td>
+					</tr>
+					<tr>
+						<td><label>Address</label></td>
+						<td>{{form_view_details.address}}</td>
+					</tr>
+					<tr>
+						<td><label>Activity</label></td>
+						<td>{{form_view_details.activitySelected}}</td>
+					</tr>
+					<tr>
+						<td><label>Contact No.</label></td>
+						<td>{{form_view_details.phoneNumber}}</td>
+					</tr>
+					<tr>
+						<td><label>Email Id</label></td>
+						<td>{{form_view_details.emailid}}</td>
+					</tr>
+					<tr>
+						<td><label>Travel Time</label></td>
+						<td>{{form_view_details.travelTime}}</td>
+					</tr>
+
+				</tbody>
+
+			</table>
+
+			</div>
+
+			<div class="col-md-6">
+
+			<div class="row">
+			<div class="col-md-offset-5">
+				<div class="ico_sun4" ng-if="weatherDataResult[0].item.forecast[0].id == '1'" ></div>
+				<div class="ico_rain31" ng-if="weatherDataResult[0].item.forecast[0].id  == '2'" ></div>
+				<div class="ico_snowflake149" ng-if="weatherDataResult[0].item.forecast[0].id  == '0'" ></div>
+				<div class="ico_river31" ng-if="weatherDataResult[0].item.forecast[0].id == '3'" ></div>
+			</div>
+			</div>
+
+			<div class="row">
+
+				
+					<h3>{{weatherDataResult[0].location.city}} {{weatherDataResult[0].location.country}}</h3>
+			
+
+			</div>
+
+			<div class="row" ng-if="weatherDataResult[0].item != null">
+				<table class="table  table-bordered">
+
+				<thead>
+
+					<tr>
+				
+						<th>Day</th>
+						<th>Date</th>
+						<th>High</th>
+						<th>Low</th>
+						<th>Text</th>
+				
+
+					</tr>
+
+				</thead>
+
+
+				<tbody>
+					<tr>
+	
+						<td>{{weatherDataResult[0].item.forecast[0].day}}</td>
+						<td>{{weatherDataResult[0].item.forecast[0].date}}</td>
+						<td>{{weatherDataResult[0].item.forecast[0].high}}</td>
+						<td>{{weatherDataResult[0].item.forecast[0].low}}</td>
+						<td>{{weatherDataResult[0].item.forecast[0].text}}</td>
+					</tr>
+
+				</tbody>
+					
+
+				</table>
+
+			</div>
+
+
+
+			</div>
+
+
+			</div>
+
+			<!-- User Information -->
+
+			<div class="row">
+				
+					<!-- Weather Data -->
+
+			<div class="col-md-6" ng-repeat="locationWeather in weatherDataResult">
+
+
+		
+
+			<h2>{{locationWeather.location.city}} {{locationWeather.location.country}} </h2>
+
+			<table class="table table-bordered center">
+			
+				<thead>
+
+					<tr>
+
+						<th colspan="5" style="text-align:left;"><span ng-click="viewMap(locationWeather.lat,locationWeather.lng, locationWeather.location.city, locationWeather.location.country)" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-map-marker" style="color: #EC1649;font-size: 17px;"></i> Location </span></th>
+						<th colspan="2" style="text-align:left;">
+						<span> {{locationWeather.location.city}} </span>
+						<span> {{locationWeather.location.country}} </span>
+							
+						</th>
+
+					</tr>
+					<tr>
+						<th>Icons</th>
+						<th>Day</th>
+						<th>Date</th>
+						<th>High</th>
+						<th>Low</th>
+						<th>Text</th>
+						<th>Flights</th>
+
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr ng-repeat="weather in locationWeather.item.forecast">
+						<td>
+							<div class="ico_sun79" ng-if="weather.id == '1'" ></div>
+							<div class="ico_rain3" ng-if="weather.id == '2'" ></div>
+							<div class="ico_snow263" ng-if="weather.id == '0'" ></div>
+							<div class="ico_river3" ng-if="weather.id == '3'" ></div>
+						</td>
+						<td>{{weather.day}}</td>
+						<td>{{weather.date}}</td>
+						<td>{{weather.high}}</td>
+						<td>{{weather.low}}</td>
+						<td>{{weather.text}}</td>
+						<td><div class="btn btn-default"><a href="http://www.makemytrip.com">Flights</a></div></td>
+					</tr>
+
+				</tbody>
+
+			</table>
+
+
+
+
+			</div>
+
+			
+
+			<!-- Weather Data -->
+			</div>
+
+			<hr/>
+
+
+
+
+
+		</div>
+
+		
+	<!-- Weather Data Page - User Weather information -->
+
+	
+	<!-- Travel Weather News Guide -->
+	<div class="container">
+		
+		<div class="row">
+
+			<h2>Summary</h2>
+
+		</div>
+
+		<div class="row">
+
+			<div class="col-md-8">
+
+				<p>
+					<b>Travel Weather News</b> provides you information regarding latest weather details for location around the world using <b>Simple Weather Api</b> and <b>Google Geocoding and Map</b>. </p><p>Best for travellers who want to get current weather details for planning their day. Plan your activity and location to visit on weekly bases. </p>
+					<p>Even book flights as you use Google map to check location of the city on the map. You can add or remove location to compare different location weather to plan your activities.</p>
+			
+
+			</div>
+
+		</div>
+
+		<div class="row" id="test">
+
+			<h4>Technologies Used:</h3>
+
+		</div>
+
+		<div class="row">
+
+			<p>
+				<ol>
+					<li>HTML</li>
+					<li>Bootstrap 3 & CSS</li>
+					<li>Angular JS and Javascript</li>
+					<li>Jquery</li>
+					<li>Simple Weather Api</li>
+					<li>Google Geocoding</li>
+					<li>Google Map</li>
+				</ol>
+
+			</p>
+
+
+		</div>
+
+		<div class="row">
+			<h4>Functionality Description</h4>
+		</div>
+
+		<div class="row">
+
+			<div class="col-md-5">
+
+				<p><i class="glyphicon glyphicon-star" style="color:rgba(199, 0, 0, 0.7);"></i> Form provides user fill in basic information such as Name, Activity, Contact No. and other user information.</p>
+				<p> It contains basic validation such as email id check and phone number check.</p>
+				<p>User can select multiple location for comparing weather.</p>
+				
+			</div>
+
+			<div class="col-md-7">
+
+				<img src="./images/image1.png" width="70%"></img>
+
+				
+			</div>
+			
+		</div>
+
+		<div class="row">
+
+			<div class="col-md-5">
+
+				<p><i class="glyphicon glyphicon-star" style="color:rgba(199, 0, 0, 0.7);"></i> You can view current primary location weather and information filled by the user.</p>
+				<p>Weather contains current date climate condition such as temperature and climate.</p>
+
+			</div>
+			<div class="col-md-7">
+
+				<img src="./images/image2.png" width="70%"></img>
+
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col-md-5">
+
+				<p><i class="glyphicon glyphicon-star" style="color:rgba(199, 0, 0, 0.7);"></i> Compare multiple location weather and climatic condition.</p>
+				<p>View from current date to next 5 days weather and see climatic condition individually.</p>
+				<p>Click to book flight by redirecting to flight booking sites</p>
+				<p><i class="glyphicon glyphicon-map-marker" style="color: #EC1649;font-size: 15px;"></i> Click! Map Icon to view current location on the google map to plan your activity</p>
+				
+			</div>
+
+			<div class="col-md-7">
+
+				<img src="./images/image3.png" width="70%"></img>
+
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-5">
+
+				<p><i class="glyphicon glyphicon-star" style="color:rgba(199, 0, 0, 0.7);"></i> Just view the map of the location selected on google map.</p>
+				<p>User can easily view the location and plan his trip.</p>
+
+			</div>
+
+			<div class="col-md-7">
+
+				<img src="./images/image4.png" width="70%"></img>
+
+			</div>
+		</div>
+
+
+
+	</div>
+
+
+	<!-- Travel Weather News Guide -->
+
+	<!-- Code Description -->
+
+	<div class="row">
+
+		<h4>Code Description</h4>
+		
+	</div>
+
+
+
+	<div class="row">
+
+		<div class="col-md-6" style="background-color:rgba(251, 251, 251, 0.53);">
+
+			<code>		factory_service.getCoordinatesFromGoogleApi = function(location_param){<br/>
+
+		var key = 'AIzaSyCYVNwrvbZRI0Zlkjkjsldfjsdflfjslj';<br/>
+		var url = 'https://maps.googleapis.com/maps/api/geocode/json';<br/>
+
+
+		return $http({<br/>
+ 				method:"GET",<br/>
+ 				url: url,<br/>
+ 				// async:true,<br/>
+ 				params:{<br/>
+ 					'address': location_param,<br/>
+ 					'key': key<br/>
+ 				}<br/>
+ 		});</code>
+
+		</div>
+
+		<div class="col-md-5">
+
+			<p>Make ajax request to <b>Google Geocode Api</b> to get longitude and latitude for Simple weather Api</p>
+			<p>Requires location name and secret key.</p>
+
+		</div>
+
+		
+	</div>
+
+	<div class="row">
+
+		<div class="col-md-6" style="background-color:rgba(251, 251, 251, 0.53);">
+
+			<code>	factory_service.getWeatherDetailsFromApi = function(lat_param,lng_param){ <br/>
+
+		var url_category = 'https://simple-weather.p.mashape.com/weatherdata';<br/>
+
+		return $http({<br/>
+ 				method:"GET",<br/>
+ 				url: url_category,<br/>
+ 				// async:true,<br/>
+ 				params:{<br/>
+ 					lat: lat_param,<br/>
+ 					lng: lng_param<br/>
+ 				},
+ 				headers: {<br/>
+ 							'X-Mashape-Key': '35fMJeFhchmshOddVYLquWcILgcYp1WRI1sjsnZQwUhoS5hvX1',<br/>
+ 							'Accept': 'application/json'<br/>
+ 							}<br/>
+ 			});<br/>
+
+			}</code>
+
+		</div>
+
+		<div class="col-md-5">
+
+			<p>Make ajax request to <b>Simple Weather Api</b> to get weather details</p>
+			<p><code>X-Mashape-Key</code> requires unique key generated by Simple weather Api.</p>
+			<p>JSON type response</p>
+
+		</div>
+
+		
+	</div>
+
+
+	<!-- Code Description -->
+
+
+		
+	</div>
+
+
+
+
+</div>
+
+
+
+</body>
+</html>
+
+
+
+
+
+

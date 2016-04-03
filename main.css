@@ -1,0 +1,102 @@
+html,body{
+	width: 100%;
+	height: 100%;
+	border: 0px;
+  font-family: 'Lato', sans-serif;
+}
+
+#mainPage{
+/*	width:100%;
+	height: 100%;
+	background-color: "yellow";
+	/*position: relative;*/
+	/*display: table;*/*/
+
+}
+
+.row{
+	margin-top: 10px;
+}
+
+
+.userInfoContainer{
+	/*padding: 20%;*/
+}
+
+.navbar-default .navbar-brand{
+  color: white;
+}
+
+.navbar-default .navbar-nav>li>a{
+  color:white;
+}
+
+
+.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+
+    text-align: center;
+}
+/* IMages */
+
+.ico_rain31, .ico_river31, .ico_snowflake149, .ico_sun4, .ico_rain3, .ico_river3, .ico_snow263, .ico_sun79 {
+  display: inline-block;
+  background-image: url(./images/spritebox-sprite.png);
+  background-repeat: no-repeat
+}
+
+.ico_rain31 {
+  background-position: -0px -0px;
+  height: 128px;
+  width: 128px
+}
+
+.ico_river31 {
+  background-position: -128px -0px;
+  height: 128px;
+  width: 128px
+}
+
+.ico_snowflake149 {
+  background-position: -0px -128px;
+  height: 128px;
+  width: 128px
+}
+
+.ico_sun4 {
+  background-position: -128px -128px;
+  height: 128px;
+  width: 128px
+}
+
+.ico_rain3 {
+  background-position: -256px -0px;
+  height: 32px;
+  width: 32px
+}
+
+.ico_river3 {
+  background-position: -256px -32px;
+  height: 32px;
+  width: 32px
+}
+
+.ico_snow263 {
+  background-position: -256px -64px;
+  height: 32px;
+  width: 32px
+}
+
+.ico_sun79 {
+  background-position: -256px -96px;
+  height: 32px;
+  width: 32px
+}
+
+a:hover{
+  text-decoration: none;
+}
+
+a{
+  color: #728596;
+}
+
